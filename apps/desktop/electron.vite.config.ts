@@ -3,6 +3,13 @@ import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
+const internalWorkspacePackages = [
+  '@mango/core',
+  '@mango/adapters',
+  '@mango/contracts',
+  '@mango/ui'
+]
+
 export default defineConfig({
   main: {
     resolve: {
@@ -13,7 +20,11 @@ export default defineConfig({
         '@mango/ui': resolve(__dirname, '../../packages/ui/src/index.ts')
       }
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: internalWorkspacePackages
+      })
+    ]
   },
   preload: {
     resolve: {
@@ -24,7 +35,11 @@ export default defineConfig({
         '@mango/ui': resolve(__dirname, '../../packages/ui/src/index.ts')
       }
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: internalWorkspacePackages
+      })
+    ]
   },
   renderer: {
     resolve: {

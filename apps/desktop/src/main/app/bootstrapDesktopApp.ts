@@ -9,13 +9,13 @@ import { FileDesktopStore } from '../persistence/fileDesktopStore'
 import { SQLiteDesktopStore } from '../persistence/sqliteDesktopStore'
 import { DesktopController } from '../services/desktopController'
 import { isTrustedDesktopUrl } from './navigationPolicy'
-
-declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string | undefined
-declare const MAIN_WINDOW_VITE_NAME: string
+import { getRendererDevServerUrl, getRendererIndexHtmlPath } from './rendererRuntime'
 
 let mainWindow: BrowserWindow | null = null
 
 const createMainWindow = () => {
+  const rendererDevServerUrl = getRendererDevServerUrl(process.env)
+
   mainWindow = new BrowserWindow({
     width: 1540,
     height: 980,
@@ -31,7 +31,7 @@ const createMainWindow = () => {
   })
 
   const handleExternalNavigation = (url: string) => {
-    if (isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL)) {
+    if (isTrustedDesktopUrl(url, rendererDevServerUrl)) {
       return
     }
 
@@ -42,12 +42,12 @@ const createMainWindow = () => {
     handleExternalNavigation(url)
 
     return {
-      action: isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL) ? 'allow' : 'deny'
+      action: isTrustedDesktopUrl(url, rendererDevServerUrl) ? 'allow' : 'deny'
     }
   })
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL)) {
+    if (isTrustedDesktopUrl(url, rendererDevServerUrl)) {
       return
     }
 
@@ -55,11 +55,11 @@ const createMainWindow = () => {
     handleExternalNavigation(url)
   })
 
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    void mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+  if (rendererDevServerUrl) {
+    void mainWindow.loadURL(rendererDevServerUrl)
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   } else {
-    void mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
+    void mainWindow.loadFile(getRendererIndexHtmlPath(__dirname))
   }
 }
 
