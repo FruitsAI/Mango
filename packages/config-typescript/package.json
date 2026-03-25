@@ -1,0 +1,11 @@
+{
+  "name": "@mango/config-typescript",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./base": "./base.json",
+    "./library": "./library.json",
+    "./desktop-app": "./desktop-app.json",
+    "./backend-app": "./backend-app.json"
+  }
+}

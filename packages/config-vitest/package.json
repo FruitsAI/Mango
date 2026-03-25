@@ -1,0 +1,11 @@
+{
+  "name": "@mango/config-vitest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./node": "./node.mjs",
+    "./desktop-renderer": "./desktop-renderer.mjs",
+    "./workspace-aliases": "./workspace-aliases.mjs"
+  }
+}

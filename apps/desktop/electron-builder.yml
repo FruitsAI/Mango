@@ -1,0 +1,19 @@
+appId: ai.fruits.mango
+productName: Mango
+directories:
+  output: release
+files:
+  - out/**
+publish:
+  provider: github
+  owner: FruitsAI
+  repo: Mango
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+linux:
+  target:
+    - AppImage

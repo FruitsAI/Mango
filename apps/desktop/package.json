@@ -1,0 +1,32 @@
+{
+  "name": "@mango/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build:app": "electron-vite build",
+    "build": "pnpm run build:app",
+    "package": "electron-builder --config electron-builder.yml",
+    "test": "pnpm run test:main && pnpm run test:renderer",
+    "test:main": "vitest run --config vitest.main.config.ts",
+    "test:renderer": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.1.1",
+    "@fontsource/ibm-plex-sans": "^5.1.1",
+    "@fontsource/syne": "^5.1.1",
+    "@mango/adapters": "workspace:*",
+    "@mango/contracts": "workspace:*",
+    "@mango/core": "workspace:*",
+    "@mango/ui": "workspace:*",
+    "better-sqlite3": "^12.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

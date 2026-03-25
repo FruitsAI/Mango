@@ -2,11 +2,15 @@
 
 # dependencies
 /node_modules
+**/node_modules
 /.pnp
 .pnp.js
+.pnpm-store
 
 # testing
 /coverage
+/test-results
+/playwright-report
 
 # next.js
 /.next/
@@ -14,11 +18,21 @@
 
 # production
 /build
+/apps/desktop/dist
+/apps/desktop/out
+/apps/*/dist
+/apps/*/out
+/packages/*/dist
+/packages/*/src/**/*.js
+/packages/*/src/**/*.d.ts
 
 # misc
 .DS_Store
 *.pem
 .worktrees/
+/.turbo
+**/.turbo
+.eslintcache
 
 # debug
 npm-debug.log*
