@@ -10,6 +10,10 @@
 
 - 预留后续迭代的未发布变更记录区。
 
+### Fixed
+
+- 新增 `.gitattributes` 统一文本文件为 `LF`，修复 Windows CI 中 `Prettier --check` 因 `CRLF` 检出导致的格式校验失败。
+
 ## [0.1.0] - 2026-03-25
 
 ### Added
