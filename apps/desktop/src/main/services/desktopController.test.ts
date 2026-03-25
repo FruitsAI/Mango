@@ -150,4 +150,30 @@ describe('DesktopController', () => {
       level: 'error'
     })
   })
+
+  it('treats approve and run as a no-op once the active task has already finished', async () => {
+    const store = new MemoryDesktopStore(createPersistedState())
+    const controller = new DesktopController(store, [
+      new FakeAdapter('claude-code', 'Claude Code CLI'),
+      new FakeAdapter('mock-claude', 'Mock Claude CLI')
+    ])
+
+    await controller.generatePlan({
+      prompt: 'Implement adapter registry',
+      workspaceId: workspace.id,
+      adapterId: 'claude-code'
+    })
+
+    const completedState = await controller.approveAndRun()
+    const repeatedState = await controller.approveAndRun()
+
+    expect(completedState.activeTask?.status).toBe('succeeded')
+    expect(repeatedState.activeTask?.status).toBe('succeeded')
+    expect(repeatedState.activeTask?.events).toHaveLength(
+      completedState.activeTask?.events.length ?? 0
+    )
+    expect(repeatedState.activeTask?.executionSummary).toBe(
+      completedState.activeTask?.executionSummary
+    )
+  })
 })

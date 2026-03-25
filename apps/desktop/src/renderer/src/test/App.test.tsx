@@ -78,4 +78,10 @@ describe('TaskWorkbench', () => {
       screen.getByText('Claude Code CLI is available for local Mango execution.')
     ).toBeInTheDocument()
   })
+
+  it('disables approve and run after the task has already reached a terminal state', () => {
+    render(<TaskWorkbench state={buildMockDesktopState()} />)
+
+    expect(screen.getByRole('button', { name: /approve and run/i })).toBeDisabled()
+  })
 })

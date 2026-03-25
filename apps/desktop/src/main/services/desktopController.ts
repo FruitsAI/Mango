@@ -152,12 +152,13 @@ export class DesktopController {
 
   public async approveAndRun(): Promise<DesktopState> {
     const persisted = await this.ensureState()
+    const activeTask = persisted.activeTask
 
-    if (!persisted.activeTask?.plan) {
+    if (!activeTask?.plan || !['planned', 'approved'].includes(activeTask.status)) {
       return this.buildDesktopState(persisted)
     }
 
-    let session = persisted.activeTask
+    let session = activeTask
 
     if (session.status === 'planned') {
       session = applyTaskTransition(session, {
