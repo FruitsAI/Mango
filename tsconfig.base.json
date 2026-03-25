@@ -1,0 +1,12 @@
+{
+  "extends": "./packages/config-typescript/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@mango/core": ["packages/core/src/index.ts"],
+      "@mango/adapters": ["packages/adapters/src/index.ts"],
+      "@mango/contracts": ["packages/contracts/src/index.ts"],
+      "@mango/ui": ["packages/ui/src/index.ts"]
+    }
+  }
+}

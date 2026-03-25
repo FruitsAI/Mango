@@ -1,0 +1,21 @@
+name: 功能建议
+description: 为 Mango 提出新能力或工作流改进建议。
+title: '[功能建议]: '
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 当前卡住了什么工作流？
+      description: 请描述你正在做的事情，以及当前最明显的阻碍。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你希望 Mango 做什么？
+  - type: textarea
+    id: success
+    attributes:
+      label: 你认为什么结果算成功？

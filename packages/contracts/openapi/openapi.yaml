@@ -1,0 +1,121 @@
+openapi: 3.1.1
+info:
+  title: Mango API
+  version: 0.1.0
+  description: |
+    Mango v1 对外 REST API 契约单一事实源。
+    当前先固定任务会话工作流的最小入口，为后续 API 与客户端类型生成提供基线。
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: task-sessions
+    description: 任务会话与执行回顾相关接口
+paths:
+  /task-sessions:
+    get:
+      tags:
+        - task-sessions
+      operationId: listTaskSessions
+      summary: 列出任务会话
+      responses:
+        '200':
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSessionListResponse'
+              examples:
+                default:
+                  value:
+                    items:
+                      - id: task_001
+                        adapterId: mock-claude
+                        prompt: Plan Mango desktop persistence
+                        status: planned
+                        workspaceId: workspace-main
+                        createdAt: '2026-03-24T00:00:00.000Z'
+                        updatedAt: '2026-03-24T00:00:00.000Z'
+                    page:
+                      nextCursor: null
+                      total: 1
+        '500':
+          description: 服务内部错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    TaskSessionSummary:
+      type: object
+      required:
+        - id
+        - adapterId
+        - prompt
+        - status
+        - workspaceId
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+        adapterId:
+          type: string
+        prompt:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - planned
+            - approved
+            - running
+            - succeeded
+            - failed
+            - cancelled
+        workspaceId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationMeta:
+      type: object
+      properties:
+        nextCursor:
+          type:
+            - string
+            - 'null'
+        total:
+          type: integer
+          minimum: 0
+    TaskSessionListResponse:
+      type: object
+      required:
+        - items
+        - page
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskSessionSummary'
+        page:
+          $ref: '#/components/schemas/PaginationMeta'
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - retryable
+        - requestId
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string

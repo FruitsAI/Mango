@@ -1,0 +1,34 @@
+name: 缺陷反馈
+description: 报告 Mango 中的错误流程、崩溃或异常行为。
+title: '[缺陷]: '
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 发生了什么？
+      description: 请描述实际发生的问题，以及你原本预期会发生什么。
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Mango 版本
+      placeholder: 0.1.0-beta.1
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台
+      options:
+        - Windows
+        - macOS
+        - Linux
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志或截图

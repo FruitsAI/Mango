@@ -1,0 +1,9 @@
+{
+  "name": "@mango/config-playwright",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./base": "./base.mjs"
+  }
+}

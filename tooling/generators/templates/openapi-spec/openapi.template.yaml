@@ -1,0 +1,114 @@
+openapi: 3.1.1
+info:
+  title: Mango API
+  version: 0.1.0
+  description: Mango 对外 REST API 契约入口文件。
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: task-sessions
+    description: 任务会话相关接口
+paths:
+  /task-sessions:
+    get:
+      tags:
+        - task-sessions
+      operationId: listTaskSessions
+      summary: 列出任务会话
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSessionListResponse'
+              examples:
+                default:
+                  value:
+                    items:
+                      - id: ts_123
+                        workspaceId: ws_001
+                        status: planned
+                        createdAt: '2026-03-24T10:00:00Z'
+                    page: 1
+                    pageSize: 20
+                    total: 1
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    TaskSession:
+      type: object
+      required:
+        - id
+        - workspaceId
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+        workspaceId:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - planned
+            - approved
+            - running
+            - succeeded
+            - failed
+            - cancelled
+        createdAt:
+          type: string
+          format: date-time
+    TaskSessionListResponse:
+      type: object
+      required:
+        - items
+        - page
+        - pageSize
+        - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskSession'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - retryable
+        - requestId
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string

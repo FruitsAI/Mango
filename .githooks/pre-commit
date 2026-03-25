@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+pnpm branch:check
+pnpm format:check
+pnpm lint
+pnpm architecture-check

@@ -1,0 +1,7 @@
+{
+  "extends": "../../packages/config-typescript/library.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts", "vitest.config.ts"]
+}
