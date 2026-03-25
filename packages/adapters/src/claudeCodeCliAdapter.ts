@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
@@ -93,6 +94,9 @@ const planSchema = {
 
 const timestamp = (offsetMilliseconds = 0): string =>
   new Date(Date.now() + offsetMilliseconds).toISOString()
+
+const createExecutionEventId = (sessionId: string, suffix: string): string =>
+  `${sessionId}-${randomUUID()}-${suffix}`
 
 const normalizeText = (value: string): string => value.trim()
 
@@ -272,14 +276,14 @@ export class ClaudeCodeCliAdapter implements AgentAdapter {
     return [
       {
         type: 'terminal.output',
-        id: `${input.sessionId}-claude-output`,
+        id: createExecutionEventId(input.sessionId, 'claude-output'),
         level: 'info',
         message: `${this.label} completed the approved run`,
         createdAt: timestamp()
       },
       {
         type: 'summary.ready',
-        id: `${input.sessionId}-claude-summary`,
+        id: createExecutionEventId(input.sessionId, 'claude-summary'),
         level: 'info',
         message: `${this.label} summary ready`,
         summary,

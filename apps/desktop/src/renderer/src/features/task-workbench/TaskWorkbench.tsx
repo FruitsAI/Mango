@@ -51,6 +51,9 @@ export const TaskWorkbench = ({
     selectedAdapterId ?? selectedWorkspace?.providerConfig?.primaryAdapterId
   )
   const activePlan = state.activeTask?.plan
+  const canApproveAndRun =
+    Boolean(activePlan) &&
+    (state.activeTask?.status === 'planned' || state.activeTask?.status === 'approved')
 
   return (
     <div className="shell">
@@ -178,7 +181,7 @@ export const TaskWorkbench = ({
               </button>
               <button
                 className="secondary-button"
-                disabled={busy || !state.activeTask?.plan}
+                disabled={busy || !canApproveAndRun}
                 onClick={onApproveAndRun}
                 type="button"
               >

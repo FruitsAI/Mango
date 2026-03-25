@@ -124,4 +124,28 @@ describe('ClaudeCodeCliAdapter', () => {
       })
     )
   })
+
+  it('emits unique event ids across repeated approved runs for the same session', async () => {
+    const commandRunner = vi.fn(async () => ({
+      exitCode: 0,
+      stdout: 'Updated the adapter registry and verified the desktop workflow.',
+      stderr: ''
+    }))
+    const adapter = new ClaudeCodeCliAdapter({
+      commandRunner
+    })
+
+    const firstRunEvents = await adapter.runApprovedPlan({
+      sessionId: 'session-1',
+      prompt: 'Implement adapter registry',
+      workspace
+    })
+    const secondRunEvents = await adapter.runApprovedPlan({
+      sessionId: 'session-1',
+      prompt: 'Implement adapter registry',
+      workspace
+    })
+
+    expect(new Set([...firstRunEvents, ...secondRunEvents].map((event) => event.id)).size).toBe(4)
+  })
 })

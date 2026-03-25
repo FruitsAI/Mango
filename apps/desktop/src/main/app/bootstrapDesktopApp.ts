@@ -8,6 +8,7 @@ import { registerDesktopIpcHandlers } from '../ipc/registerDesktopIpcHandlers'
 import { FileDesktopStore } from '../persistence/fileDesktopStore'
 import { SQLiteDesktopStore } from '../persistence/sqliteDesktopStore'
 import { DesktopController } from '../services/desktopController'
+import { isTrustedDesktopUrl } from './navigationPolicy'
 
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string | undefined
 declare const MAIN_WINDOW_VITE_NAME: string
@@ -27,6 +28,31 @@ const createMainWindow = () => {
       contextIsolation: true,
       nodeIntegration: false
     }
+  })
+
+  const handleExternalNavigation = (url: string) => {
+    if (isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL)) {
+      return
+    }
+
+    void shell.openExternal(url)
+  }
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    handleExternalNavigation(url)
+
+    return {
+      action: isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL) ? 'allow' : 'deny'
+    }
+  })
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (isTrustedDesktopUrl(url, MAIN_WINDOW_VITE_DEV_SERVER_URL)) {
+      return
+    }
+
+    event.preventDefault()
+    handleExternalNavigation(url)
   })
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
