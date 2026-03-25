@@ -15,6 +15,7 @@ export const baseConfig = tseslint.config(
       '**/out/**',
       '**/coverage/**',
       '**/.turbo/**',
+      '**/.worktrees/**',
       '**/*.d.ts',
       '**/*.d.mts',
       '**/playwright-report/**',

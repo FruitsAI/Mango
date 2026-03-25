@@ -16,6 +16,9 @@
 - 修复终态任务仍可再次触发 `Approve and run` 的问题，主进程会将其视为 no-op，渲染层也会在任务进入终态后禁用执行按钮。
 - 修复 `Claude Code CLI` 适配器在同一 session 重复执行时复用事件 ID 的问题，避免时间线渲染出现重复 key。
 - 为桌面主窗口补充受信导航策略，仅允许本地 `file://` 或开发服务器地址留在应用内，其它链接统一改走系统浏览器。
+- 修复桌面端构建把 `@mango/*` workspace 包 external 到运行时的问题，避免 clean checkout 下 Electron 启动时因缺少 `dist` 产物而报 `ERR_MODULE_NOT_FOUND`。
+- 强化桌面端 smoke 检查，校验主进程与 preload 产物中不再残留 `@mango/*` 裸导入，并兼容根级 `out/renderer` 输出路径。
+- 修复桌面端开发启动仍依赖旧版 `MAIN_WINDOW_VITE_*` 全局变量的问题，改为读取 `electron-vite` 当前注入的 `ELECTRON_RENDERER_URL` 并固定加载 `out/renderer/index.html`。
 
 ## [0.1.0] - 2026-03-25
 
